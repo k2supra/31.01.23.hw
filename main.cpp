@@ -2,40 +2,34 @@
 #include <ctime>
 using namespace std;
 
-int S_U_M(int arr[], int sum, int ten_size, int arr_sum[], int begin);
+int min(int arr[], int index = 0, int sum = 0, int nowSum = 0, int cIndex = 0)
+{
+	if (cIndex == 100)
+		return index;
 
-int main() {
-	srand(time(0));
-	const int size = 100;
-	int sum = 0;
-	const int sum_size = 100;
-	int counter = 0;
-	int begin = 0;
-	int ten_size = 10;
-	int arr[size]{};
-	int arr_sum[size]{};
-	for (size_t i = 0; i < size; i++)
-	{
-		arr[i] = rand() % 1000;
-		cout << arr[i] << ' ';
-	}
-	S_U_M(arr, sum, ten_size, arr_sum, begin);
-	
+	int newsum = nowSum + arr[cIndex];
+
+	if (cIndex < 10)
+		return min(arr, index, newsum, newsum, cIndex + 1);
+
+	newsum = newsum - arr[cIndex - 10];
+	if (newsum > sum)
+		return min(arr, cIndex - 10, newsum, newsum, cIndex + 1);
+	else
+		return min(arr, index, sum, newsum, cIndex + 1);
 }
 
-int S_U_M(int arr[], int sum, int ten_size, int arr_sum[], int begin) {
-	for (begin; begin < ten_size; begin++)
+int main()
+{
+	srand(time(0));
+	const int size = 100;
+	int arr[100]{};
+
+	for (int i = 0; i < size; i++)
 	{
-		sum += arr[begin];
-		arr_sum[begin] = sum;
-		if (begin == 9)
-		{
-			cout << "\nArr_sum = " << arr_sum[begin];
-			
-		}
+		arr[i] = rand() % 100;
+		cout << arr[i] << " ";
 	}
-	/*arr_sum[0] = sum;*/
-	/*cout << "\nRes = " << sum;*/
-	/*cout << "\nArr_sum = " << arr_sum[0];*/
-	return 0;
+	cout << "\n\n";
+	cout << "The pos of min sum: " << min(arr);
 }
